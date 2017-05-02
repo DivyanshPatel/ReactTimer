@@ -25606,12 +25606,35 @@
 
 	  getInitialState: function getInitialState() {
 	    return {
-	      count: 0
+	      count: 0,
+	      countDownStatus: 'Stopped'
 	    };
+	  },
+
+	  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
+	    if (this.state.countDownStatus != prevState.countDownStatus) {
+	      switch (this.state.countDownStatus) {
+	        case 'Started':
+	          this.startTimer();
+	          break;
+	      }
+	    }
+	  },
+
+	  startTimer: function startTimer() {
+	    var _this = this;
+
+	    this.timer = setInterval(function () {
+	      var newCount = _this.state.count - 1;
+	      _this.setState({
+	        count: newCount >= 0 ? newCount : 0
+	      });
+	    }, 1000);
 	  },
 	  handleCountdown: function handleCountdown(seconds) {
 	    this.setState({
-	      count: seconds
+	      count: seconds,
+	      countDownStatus: 'Started'
 	    });
 	  },
 
