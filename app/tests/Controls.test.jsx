@@ -13,7 +13,7 @@ describe('Controls', () => {
 
   describe('render' , () => {
     it('should render pause when started', () => {
-      var controls = TestUtils.renderIntoDocument(<Controls countDownStatus='Started'/>)
+      var controls = TestUtils.renderIntoDocument(<Controls countdownStatus='started'/>)
       var $el = $(ReactDOM.findDOMNode(controls));
       var $pauseButton = $el.find('button:contains(Pause)');
 
@@ -21,7 +21,7 @@ describe('Controls', () => {
     });
 
     it('should render Start when Stopped', () => {
-      var controls = TestUtils.renderIntoDocument(<Controls countDownStatus='Stopped'/>)
+      var controls = TestUtils.renderIntoDocument(<Controls countdownStatus='stopped'/>)
       var $el = $(ReactDOM.findDOMNode(controls));
       var $startButton = $el.find('button:contains(Start)');
 
