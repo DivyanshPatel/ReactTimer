@@ -25784,6 +25784,7 @@
 	var Controls = React.createClass({
 	  displayName: 'Controls',
 
+
 	  propTypes: {
 	    countdownStatus: React.PropTypes.string.isRequired,
 	    onStatusChange: React.PropTypes.func.isRequired
@@ -25807,7 +25808,7 @@
 	          { className: 'button secondary', onClick: _this2.onStatusChange('paused') },
 	          'Pause'
 	        );
-	      } else if (countdownStatus === 'paused') {
+	      } else {
 	        return React.createElement(
 	          'button',
 	          { className: 'button primary', onClick: _this2.onStatusChange('started') },
@@ -25838,22 +25839,69 @@
 	'use strict';
 
 	var React = __webpack_require__(7);
+	var Clock = __webpack_require__(231);
+	var Controls = __webpack_require__(233);
 
-	var TimerComponent = React.createClass({
-	  displayName: 'TimerComponent',
+	var Timer = React.createClass({
+	  displayName: 'Timer',
 
+	  getInitialState: function getInitialState() {
+	    return {
+	      count: 0,
+	      timerStatus: 'stopped'
+	    };
+	  },
+	  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
+	    if (this.state.timerStatus !== prevState.timerStatus) {
+	      switch (this.state.timerStatus) {
+	        case 'started':
+	          this.handleStart();
+	          break;
+	        case 'stopped':
+	          this.setState({ count: 0 });
+	        case 'paused':
+	          clearInterval(this.timer);
+	          this.timer = undefined;
+	          break;
+	      }
+	    }
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    clearInterval(this.timer);
+	  },
+	  handleStart: function handleStart() {
+	    var _this = this;
 
+	    this.timer = setInterval(function () {
+	      _this.setState({
+	        count: _this.state.count + 1
+	      });
+	    }, 1000);
+	  },
+	  handleStatusChange: function handleStatusChange(newTimerStatus) {
+	    this.setState({ timerStatus: newTimerStatus });
+	  },
 	  render: function render() {
+	    var _state = this.state,
+	        count = _state.count,
+	        timerStatus = _state.timerStatus;
+
+
 	    return React.createElement(
 	      'div',
 	      null,
-	      'Timer Component'
+	      React.createElement(
+	        'h1',
+	        { className: 'page-title' },
+	        'Timer App'
+	      ),
+	      React.createElement(Clock, { totalSeconds: count }),
+	      React.createElement(Controls, { countdownStatus: timerStatus, onStatusChange: this.handleStatusChange })
 	    );
 	  }
-
 	});
 
-	module.exports = TimerComponent;
+	module.exports = Timer;
 
 /***/ }),
 /* 235 */
@@ -26238,7 +26286,7 @@
 
 
 	// module
-	exports.push([module.id, ".top-bar, .top-bar ul {\n  background-color: #333333; }\n\n.top-bar .menu-text {\n  color: white;\n  padding: 0; }\n\n.menu > .menu-text > a {\n  display: inline;\n  padding: 0; }\n\n.top-bar .active-link {\n  font-weight: bold; }\n\n.clock {\n  align-items: center;\n  background-color: #B5D0E2;\n  border: 2px solid #2099E8;\n  border-radius: 50%;\n  display: flex;\n  height: 14rem;\n  justify-content: center;\n  margin: 4rem auto;\n  width: 14rem; }\n\n.clock-text {\n  color: white;\n  font-size: 2.25rem;\n  font-weight: 300; }\n\n.controls {\n  display: flex;\n  justify-content: center; }\n  .controls .button {\n    padding: .75rem 3rem; }\n  .controls .button:first-child {\n    margin-right: 1.5rem; }\n\n.page-title {\n  margin: 2rem 0;\n  text-align: center; }\n", ""]);
+	exports.push([module.id, ".top-bar, .top-bar ul {\n  background-color: #333333; }\n\n.top-bar .menu-text {\n  color: white;\n  padding: 0; }\n\n.menu > .menu-text > a {\n  display: inline;\n  padding: 0; }\n\n.top-bar .active-link {\n  font-weight: bold; }\n\n.clock {\n  align-items: center;\n  background-color: #B5D0E2;\n  border: 2px solid #2099E8;\n  border-radius: 50%;\n  display: flex;\n  height: 14rem;\n  justify-content: center;\n  margin: 4rem auto;\n  width: 14rem; }\n\n.clock-text {\n  color: white;\n  font-size: 2.25rem;\n  font-weight: 300; }\n\n.controls {\n  display: flex;\n  justify-content: center; }\n  .controls .button {\n    padding: .75rem 3rem; }\n  .controls .button:first-child {\n    margin-right: 1.5rem; }\n\n.page-title {\n  margin: 2rem 0;\n  text-align: center; }\n\n.timercontrols {\n  justify-content: center; }\n  .timercontrols .button {\n    padding: .75rem 3rem; }\n  .timercontrols .button:first-child {\n    margin-right: 1.5rem; }\n", ""]);
 
 	// exports
 
